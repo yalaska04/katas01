@@ -32,8 +32,6 @@ class Bola():
         self.vy = vy 
         self.color = color 
 
-    def tocaBorde: 
-
 bolas = []
 for _ in range(10): 
     bola = Bola(randint(0, ANCHO),
@@ -61,7 +59,7 @@ while not game_over:
     
         bola.vy *= rebotaY(bola.y)
         bola.vx *= rebotaX(bola.x)
-    
+
     # Gestión de la pantalla
     pantalla.fill(NEGRO) # rellenamos la pantalla
     for bola in bolas: 

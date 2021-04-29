@@ -8,6 +8,7 @@ VERDE = (0, 255, 0)
 NEGRO = (0, 0, 0)
 ANCHO = 800
 ALTO = 600
+VAL_VELOCIDAD = [randint(-10, -5), randint(5, 10)]
 
 class Bola(): 
     def __init__(self, x, y, vx, vy, color): 
@@ -37,8 +38,8 @@ class Game():
         for _ in range(10): 
             bola = Bola(randint(0, ANCHO),
                         randint(0, ALTO),
-                        randint(5, 10),
-                        randint(5, 10),
+                        VAL_VELOCIDAD[randint(0,1)],
+                        VAL_VELOCIDAD[randint(0,1)],
                         (randint(0, 255), randint(0, 255), randint(0, 255)))
 
             self.bolas.append(bola)
