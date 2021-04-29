@@ -32,6 +32,8 @@ class Bola():
         self.vy = vy 
         self.color = color 
 
+    def tocaBorde: 
+
 bolas = []
 for _ in range(10): 
     bola = Bola(randint(0, ANCHO),
@@ -41,7 +43,7 @@ for _ in range(10):
                 (randint(0, 255), randint(0, 255), randint(0, 255)))
 
     bolas.append(bola)
-    
+
 game_over = False
 while not game_over: 
     reloj.tick(60) # el reloj no permite flujo hasta que llega al tiempo establecido (= tapón temporal)
