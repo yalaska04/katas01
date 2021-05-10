@@ -14,20 +14,11 @@ VERDE = (0, 255, 0)
 NEGRO = (0, 0, 0)
 AMARILLO = (255, 255, 0)
 
-levels = [  [ '---X----'],
-
-            [ 'XXXXXXXX',
+level1 = ['XXXXXXXX',
               'X--DD--X',
               'X--DD--X',
-              'XXXXXXXX'],
-
-            ['DDDDDDDD',
-             'DDDDDDDD',
-             'DDDDDDDD',
-             'DDDDDDDD']
-]
-
-
+              'XXXXXXXX']
+              
 class MarcadorH(pg.sprite.Sprite): 
     # Marcador versión Hugo, usando diccionarios y párametro clave-valor
     plantilla = '{}'
@@ -87,6 +78,25 @@ class Ladrillo(pg.sprite.Sprite):
         else: 
             return False
         '''
+
+class Disponer_ladrillos():  
+
+    class Tipo():
+        hueco = '-'
+        normal = 'X'
+        duro = 'D'
+    
+    def tipo_ladrillos():
+        lista = []
+        for i in range(4):
+            for j in range(8): 
+                if level1[i][j] == Disponer_ladrillos.Tipo.hueco:
+                    lista.append(None)
+                elif level1[i][j] == Disponer_ladrillos.Tipo.normal:
+                    lista.append(False)
+                elif level1[i][j] == Disponer_ladrillos.Tipo.duro:
+                    lista.append(True)
+        return lista
 
 class Marcador(pg.sprite.Sprite): 
 
@@ -229,7 +239,6 @@ class Bola(pg.sprite.Sprite):
             self.vy = random.randint(5, 10) * random.choice([-1, 1])
             self.estado = Bola.Estado_Bola.viva
 
-
 class Game(): 
     def __init__(self): 
         self.pantalla = pg.display.set_mode((ANCHO, ALTO))
@@ -238,10 +247,20 @@ class Game():
         self.todoGrupo = pg.sprite.Group() # instancia de grupo 
         self.grupoJugador = pg.sprite.Group()
         self.grupoLadrillos = pg.sprite.Group()
-        self.level = 0
         
-        self.disponer_ladrillos(levels[self.level])
+        self.nivel = Disponer_ladrillos.tipo_ladrillos() #lista con True/False/None
 
+        elemento_lista = 0
+        for fila in range(4): 
+            for columna in range(8): 
+                x = columna * 100 + 5 # hay que dibujarse la pantalla para sacar el patrón
+                y = fila * 40 + 5
+                esDuro = self.nivel[elemento_lista]
+                # esDuro = random.randint(1,10) == 1 --> con esto salen ladrillos duros aleatorios
+                ladrillo = Ladrillo(x, y, esDuro)
+                self.grupoLadrillos.add(ladrillo)
+                
+                elemento_lista += 1
 
         self.cuentaPuntos = MarcadorH(10,10, fontsize=50)
         self.cuentaVidas = CuentaVidas(790, 10, 'topright', 50, AMARILLO)
@@ -257,15 +276,6 @@ class Game():
         
         self.todoGrupo.add(self.grupoJugador, self.grupoLadrillos)
         self.todoGrupo.add(self.cuentaPuntos, self.cuentaVidas)
-    
-    def disponer_ladrillos(self, level):
-        for fila, cadena in enumerate(level):
-            for contador, caracter in enumerate(cadena):
-                if caracter in 'XD': 
-                    x = 5 + (100 * contador)
-                    y = 5 + (40 * fila)
-                    ladrillo = Ladrillo(x, y, caracter == 'D')
-                    self.grupoLadrillos.add(ladrillo)
         
     def bucle_principal(self):
         game_over = False
@@ -287,10 +297,6 @@ class Game():
                 if ladrillo.desaparece(): 
                     self.grupoLadrillos.remove(ladrillo)
                     self.todoGrupo.remove(ladrillo)
-                    if len(self.grupoLadrillos) == 0: # cuando la lista todoGrupo se queda vacía
-                        self.level += 1 
-                        self.disponer_ladrillos(levels[self.level])
-                        self.todoGrupo.add(self.grupoLadrillos)
 
 
             self.todoGrupo.update(dt)
