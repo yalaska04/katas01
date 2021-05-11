@@ -108,7 +108,7 @@ class Game(Scenes):
 class Portada(Scenes): 
     
     def __init__(self, pantalla):
-        super().__init__(pantalla) 
+        super().__init__(pantalla)
         self.instrucciones = Marcador(ANCHO // 2, ALTO //2, 'center', 50, AMARILLO)
         self.instrucciones.text = 'Pulsa espacio para jugar'
         self.todoGrupo.add(self.instrucciones)
